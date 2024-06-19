@@ -1,0 +1,231 @@
+---
+title: "Tarea1-AlanGutierrez"
+author: "AlanJosueGutierrez"
+date: "2024-06-06"
+output: html_document
+---
+
+## Ejercicio 1
+Se convocaron a estudiantes de enfermería y al público en general para registrarse y apoyar como voluntario en los puestos de vacunación contra covid. Si 7 de cada 10 voluntarios son estudiantes de enfermería:
+
+1. Calcule la probabilidad de que se necesiten 40 voluntarios registrados para completar 20 estudiantes de enfermería.
+
+2. Calcule la probabilidad de que se necesiten 30 voluntarios registrados para completar 20 estudiantes de enfermería.
+
+3. Grafique la función de probabilidad (o densidad) utilizada.
+
+Solución.
+1.-
+Para este inciso se tiene una distribución binomial negativa con $r=20$ estudiantes de enfermería, los éxitos deseados entre los voluntarios. La variable $X$ representa los fracasos, es decir, las personas que no son estudiantes de enfermería, hasta que se obtienen los éxitos $r=20$ deseados.
+
+$X =$ número de fracasos al que se obtiene el número $r$ de estudiantes de enfermería, entonces $X \sim BN(r=20,p=7/10)$
+
+Queremos calcular $P[X=20]=f(20)$
+
+```{r}
+dnbinom(x=20, size=20, prob=0.7)
+```
+2.-
+$X =$ número de fracasos $(10)$ al que se obtiene el número $r=20$ de estudiantes de enfermería, entonces $X \sim BN(r=20,p=7/10)$
+
+Queremos calcular $P[X=10]=f(10)$
+
+```{r}
+dnbinom(x=10, size=20, prob=0.7)
+```
+3. 
+Graficamos la función de probabilidad
+```{r}
+x <- seq(0, 20, 1)
+tabla.prob <- data.frame( x = x, probabilidad = dnbinom(x=x, size = 20, prob = 7/10))
+tabla.prob
+```
+```{r}
+plot( tabla.prob, main = "Función de probabilidad Bin Neg(r=20, p=0.7)", pch = 19, ylab = "f(x)", col ="blue")
+```
+
+## Ejercicio 2
+Los precios nacionales por arrendamiento de tanques con oxígeno medicinal con capacidad para 10,000 litros de oxígeno, tan demandados durante la contingencia sanitaria por covid, tienen una media de MX\$1177 y una desviación estándar de MX\$972. Si se elige una muestra de 40 tanques:
+
+1. Aproxime la probabilidad de que la media muestral de sus precios se encuentre entre MX\$1000 y MX\$1200 pesos.
+
+2. Grafique la función de probabilidad (o densidad) utilizada.
+
+Solucion.
+1.
+Para este inciso tenemos una distribución normal con media $\mu=1177$ y desviación estándar $\sigma=972$.
+
+$X =$ precio de los tanques de Oxígeno, entonces $X \sim Normal(\mu=1177,\sigma^2=972^2)$
+
+Queremos calcular $P[1000\leq X \leq 1200] = F(1200)-F(1000)$
+
+```{r}
+pnorm(1200,mean=1177, sd=972)-pnorm(1000,mean=1177, sd=972)
+```
+2.
+Media y desviación típica
+```{r}
+mu <- 1177
+sigma <- 972
+```
+
+
+
+Grid para una distribución normal no estándar
+```{r}
+x <- seq(-3, 3, length = 100) * sigma + mu
+```
+
+
+Función de densidad
+```{r}
+f <- dnorm(x, mu, sigma)
+plot(x, f, type = "l", lwd = 2, col = "blue", ylab = "f(x)", xlab = "Precio",  main = "Función de Prob. Normal (mu=1177, sigma=972)", pch = 19)
+```
+
+## Ejercicio 3
+Ante la demanda ocasionada por la pandemia de covid, se realizó una investigación de los precios por recargas de oxígeno medicinal en cilindros con capacidad para 10,000 litros de oxígeno. Si el precio ofrecido por los proveedores nacionales sigue una distribución normal con media de MX\$731 y desviación estándar de MX\$175:
+
+1. Calcule el porcentaje de tanques cuyo precio oscila entre MX\$600 y MX\$700.
+
+2. Calcule el porcentaje de tanques cuyo precio es de al menos MX\$800.
+
+3. Grafique la función de probabilidad (o densidad) utilizada.
+
+
+Solucion.
+1.
+Para este inciso tenemos una distribución normal con media $\mu=731$ y desviación estándar $\sigma=175$.
+
+$X =$ precio de los tanques de Oxígeno, entonces $X \sim Normal(\mu=731,\sigma^2=175^2)$
+
+Queremos calcular $P[600\leq X \leq 700] = F(700)-F(600)$
+```{r}
+pnorm(700,mean=731, sd=175)-pnorm(600,mean=1177, sd=175)
+```
+2.
+Queremos calcular $P[X\geq 800] = 1-F(800)$
+
+```{r}
+1-pnorm(800,mean=731, sd=175)
+```
+
+3.
+Media y desviación típica
+```{r}
+mu <- 731
+sigma <- 175
+```
+
+
+
+Grid para una distribución normal no estándar
+```{r}
+x <- seq(-3, 3, length = 100) * sigma + mu
+```
+
+
+Función de densidad
+```{r}
+f <- dnorm(x, mu, sigma)
+plot(x, f, type = "l", lwd = 2, col = "blue", ylab = "f(x)", xlab = "Precio", main = "Función de Prob. Normal (mu=731, sigma=175)", pch = 19)
+```
+
+
+## Ejercicio 4
+El primer filtro en un puesto de vacunación contra covid, consiste en preguntar a las personas si han presentado en la última semana alguno de los síntomas asociados a la enfermedad como tos y fiebre. Si alguna persona ha presentado al menos uno de estos síntomas, se le invita a pasar a responder un cuestionario más detallado con profesionales de la salud para decidir si es conveniente vacunarlo o no. Si de registros previos se sabe que el 97% de las personas que acuden a vacunarse no han presentado síntomas en la última semana:
+
+1. Calcule la probabilidad de que se necesiten encuestar a 100 personas para encontrar a la primera que pasará a responder el cuestionario detallado.
+
+2. Calcule la probabilidad de que la 50° persona sea la primera que pasará a responder el cuestionario detallado.
+
+3. Calcule la probabilidad de que la primera persona encuestada sea la primera que pasará a responder el cuestionario detallado.
+
+4. Grafique la función de probabilidad (o densidad) utilizada.
+
+Solucion.
+1.
+Para este inciso tenemos una distribución geométrica con probabilidad $p=0.03$ para que una persona responda el cuestionario detallado.
+
+En la distribución geométrica, la variable $X$ representa el número de fracasos antes de encontrar el único éxito, por lo tanto, en este caso el interés es calcular  
+P(X=124)
+
+
+$X =$ número de personas antes de que la primera persona deba responder un cuestionario, entonces $X \sim Geom(x,p=0.03)$
+
+Queremos calcular $P[X = 99] = f(99)$
+
+```{r}
+dgeom(x=99, prob=0.03)
+```
+
+2.
+Queremos calcular $P[X = 49] = f(49)$
+```{r}
+dgeom(x=49, prob=0.03)
+```
+
+3.
+Queremos calcular $P[X = 0] = f(0)$
+
+```{r}
+dgeom(x=0, prob=0.03)
+```
+4.
+
+```{r}
+x <- seq(0, 100, 1)
+tabla.prob <- data.frame( x = x, probabilidad = dgeom(x=x, prob = 0.03))
+tabla.prob
+```
+```{r}
+plot( tabla.prob, main = "Función de Probabilidad Geométrica(p=0.03)", pch = 19, ylab = "f(x)", col ="blue")
+```
+
+## Ejercicio 5
+Durante el proceso de vacunación contra covid, se aplicaron en cierto centro de salud 100 vacunas de la marca Moderna, y 200 de la marca Pfizer. Si de las 300 personas vacunadas se selecciona una muestra de 15, y se les contacta por teléfono para dar seguimiento e investigar las posibles reacciones provocadas por la vacuna:
+
+1. Calcule la probabilidad de que todas personas seleccionadas en la muestra hayan sido vacunadas con la vacuna Moderna.
+
+2. Calcule la probabilidad de que dos o más de las personas de la muestra hayan sido vacunadas con Moderna
+
+3. Calcule la probabilidad de que entre 7 y 10 personas hayan sido vacunadas con Pfizer
+
+4. Grafique la función de probabilidad (o densidad) utilizada.
+
+Sol. 
+1.
+Aquí se tiene una situación que se puede modelar por medio de una distribución hipergeométrica con  $m=100$ éxitos de la marca moderna,  $n=200$ fracasos de la marca moderna (éxitos de Pfizer) y $k=15$ el tamaño de la muestra. 
+
+$X =$ número de exitos de la muestra, entonces $X \sim Hipergeométrica(m=100,n=200, k=15)$
+
+El objetivo es calcular $P[X = 15] = f(15)$
+
+```{r}
+dhyper(x=15, m=100, k=15, n=200)
+```
+
+2.
+Queremos calcular $P[X\geq2]=1-P[X=2]$
+```{r}
+1-dhyper(x=2, m=100, k=15, n=200)
+```
+3.
+La probabilidad de que entre 7 y 10 personas hayan sido vacunadas con Pfizer (fracasos) esta dada por la probabilidad de que entre 8 y 5 personas hayan sido vacunadas con Moderna (éxitos). Entonces $P[5 \leq X \leq 8]= F[8]-F[5]$
+```{r}
+phyper( q=8, m=100, k=15, n=200)- phyper(q=5, m=100, k=15, n=200)
+```
+4.
+
+```{r}
+x <- seq(0, 15, 1)
+tabla.prob <- data.frame( x = x, probabilidad = dhyper(x=x, m=100, k=15, n=200))
+tabla.prob
+```
+```{r}
+plot( tabla.prob, main = "Función de Prob. Hipergeométrica(m=100, k=15, n=200)", pch = 19, ylab = "f(x)", col ="blue")
+```
+
+
+
+
